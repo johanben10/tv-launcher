@@ -30,7 +30,31 @@ body{
   overflow-x:hidden;
   overflow-y:auto;
   padding-bottom:4vh;
+  position:relative;
 }
+.photo-bg{
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+  display:none;
+}
+.photo-overlay{
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background-color:rgba(5,7,13,.55);
+  z-index:-1;
+  display:none;
+}
+.bgthumbs{overflow:hidden;max-height:60vh;overflow-y:auto}
+.bgthumb{
+  display:block;float:left;width:5.5rem;height:9.5rem;margin:0 .5rem .5rem 0;
+  border-radius:.6rem;border:3px solid transparent;background-size:cover;background-position:center;
+  cursor:pointer;
+}
+.bgthumb.tv-focus{border-color:var(--focus)}
+.bgthumb.none{background-color:var(--card);color:var(--text);text-align:center;font-size:.8rem;padding-top:3.8rem}
 .wrap{max-width:1600px;width:100%;margin:0 auto;padding:2.5vh 3vw 3vh}
 header{display:block;width:100%;overflow:hidden}
 .header-left{float:left;max-width:60%}
@@ -84,6 +108,8 @@ kbd{background-color:var(--card);border-radius:.4rem;padding:.1rem .5rem}
 </style>
 </head>
 <body>
+<div class="photo-bg" id="photoBg"></div>
+<div class="photo-overlay" id="photoOverlay"></div>
 <div class="wrap" id="app">
   <header>
     <div class="header-left">
@@ -106,6 +132,7 @@ kbd{background-color:var(--card);border-radius:.4rem;padding:.1rem .5rem}
     <button class="chip" id="btnEdit">Edit tiles</button>
     <button class="chip" id="btnAdd" style="display:none;">+ Add</button>
     <button class="chip" id="btnLoc">Location</button>
+    <button class="chip" id="btnBg">Background</button>
   </div>
 
   <main class="grid" id="grid"></main>
@@ -133,6 +160,14 @@ kbd{background-color:var(--card);border-radius:.4rem;padding:.1rem .5rem}
     <h2>Weather location</h2>
     <label for="lCity">City</label><input id="lCity" placeholder="e.g. Lagos">
     <div class="row"><button class="chip" id="lCancel">Cancel</button><button class="chip" id="lSave" style="background-color:#6c8cff;color:#fff;">Save</button></div>
+  </div>
+</div>
+
+<div class="dlg" id="dlgBg">
+  <div class="box" style="width:40rem;">
+    <h2>Choose a background</h2>
+    <div class="bgthumbs" id="bgThumbs"></div>
+    <div class="row"><button class="chip" id="bgCancel">Close</button></div>
   </div>
 </div>
 
@@ -178,6 +213,54 @@ function applyTheme() {
   var label = theme.charAt(0).toUpperCase() + theme.slice(1);
   $("#btnTheme").innerHTML = "Theme: " + label;
 }
+/* ---------- Photo background ---------- */
+var BACKGROUNDS = [];
+(function () {
+  var i;
+  for (i = 1; i <= 19; i++) { BACKGROUNDS.push("backgrounds/bg" + i + ".jpg"); }
+})();
+var bgChoice = store.get("bg", "");
+
+function applyBackground() {
+  var layer = $("#photoBg");
+  var overlay = $("#photoOverlay");
+  if (bgChoice) {
+    layer.style.backgroundImage = "url('" + bgChoice + "')";
+    layer.style.display = "block";
+    overlay.style.display = "block";
+  } else {
+    layer.style.display = "none";
+    overlay.style.display = "none";
+  }
+}
+applyBackground();
+
+function renderBgThumbs() {
+  var box = $("#bgThumbs");
+  var html = '<a class="bgthumb none" data-bg="" tabindex="0">None</a>';
+  var i;
+  for (i = 0; i < BACKGROUNDS.length; i++) {
+    html += '<a class="bgthumb" data-bg="' + BACKGROUNDS[i] + '" style="background-image:url(\'' + BACKGROUNDS[i] + '\')" tabindex="0"></a>';
+  }
+  box.innerHTML = html;
+}
+renderBgThumbs();
+
+$("#bgThumbs").addEventListener("click", function (e) {
+  var el = e.target;
+  while (el && el.className.indexOf("bgthumb") === -1) { el = el.parentNode; }
+  if (!el || !el.getAttribute) { return; }
+  bgChoice = el.getAttribute("data-bg");
+  store.set("bg", bgChoice);
+  applyBackground();
+  $("#dlgBg").className = "dlg";
+});
+
+$("#btnBg").onclick = function () {
+  $("#dlgBg").className = "dlg open";
+};
+$("#bgCancel").onclick = function () { $("#dlgBg").className = "dlg"; };
+
 $("#btnTheme").onclick = function () {
   var idx = THEMES.indexOf(theme);
   theme = THEMES[(idx + 1) % THEMES.length];
@@ -513,6 +596,9 @@ document.addEventListener("keydown", function (e) {
       e.preventDefault();
     } else if (dLoc.className.indexOf("open") !== -1) {
       dLoc.className = "dlg";
+      e.preventDefault();
+    } else if ($("#dlgBg").className.indexOf("open") !== -1) {
+      $("#dlgBg").className = "dlg";
       e.preventDefault();
     } else if (editing) {
       $("#btnEdit").click();
