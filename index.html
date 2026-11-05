@@ -11,10 +11,11 @@
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 102%;
+    height: 100%;
     background-color: #05070d;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
   }
   .bg {
     position: fixed;
@@ -237,11 +238,7 @@ function goFullscreen() {
     else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
   } catch (e) {}
 }
-window.addEventListener("load", function () {
-  goFullscreen();
-  setTimeout(function () { window.scrollTo(0, 1); }, 300);
-  setTimeout(function () { window.scrollTo(0, 1); }, 1000);
-});
+window.addEventListener("load", goFullscreen);
 document.addEventListener("click", goFullscreen);
 </script>
 </body>
