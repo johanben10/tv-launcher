@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #0b0b0d;
+    color: #f2f2f2;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .clock {
+    text-align: center;
+    font-size: 8vw;
+    padding-top: 4vh;
+    font-weight: 300;
+  }
+  .date {
+    text-align: center;
+    font-size: 2vw;
+    opacity: 0.7;
+    margin-bottom: 4vh;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2vw;
+    padding: 0 4vw;
+  }
+  .tile {
+    background: #1b1b1f;
+    border-radius: 16px;
+    padding: 3vh 1vw;
+    text-align: center;
+    font-size: 1.6vw;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid transparent;
+  }
+  .tile:focus, .tile:hover {
+    border-color: #4da3ff;
+    background: #26262c;
+  }
+</style>
+</head>
+<body>
+  <div class="clock" id="clock">--:--</div>
+  <div class="date" id="date"></div>
+  <div class="grid">
+    <a class="tile" href="https://www.youtube.com/tv" tabindex="1">YouTube</a>
+    <a class="tile" href="https://www.netflix.com" tabindex="2">Netflix</a>
+    <a class="tile" href="https://www.primevideo.com" tabindex="3">Prime Video</a>
+    <a class="tile" href="https://www.disneyplus.com" tabindex="4">Disney+</a>
+    <a class="tile" href="https://www.plex.tv/watch-free" tabindex="5">Plex</a>
+    <a class="tile" href="https://www.zdf.de" tabindex="6">ZDF</a>
+    <a class="tile" href="https://www.ardmediathek.de" tabindex="7">ARD</a>
+    <a class="tile" href="https://www.arte.tv" tabindex="8">ARTE</a>
+  </div>
+<script>
+function tick() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+  document.getElementById('date').textContent =
+    now.toLocaleDateString([], {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+}
+tick();
+setInterval(tick, 1000 * 30);
+</script>
+</body>
+</html>
