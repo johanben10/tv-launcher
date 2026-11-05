@@ -6,68 +6,140 @@
 <style>
   html, body {
     margin: 0;
-    height: 100%;
-    background: #0b0b0d;
-    color: #f2f2f2;
+    padding: 0;
+    width: 1920px;
+    height: 1080px;
+    background-color: #05070d;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background-color: rgba(5, 7, 13, 0.55);
+  }
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
   }
   .clock {
     text-align: center;
-    font-size: 8vw;
-    padding-top: 4vh;
-    font-weight: 300;
+    font-size: 150px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    padding-top: 90px;
+    margin: 0;
+    color: #ffffff;
   }
   .date {
     text-align: center;
-    font-size: 2vw;
-    opacity: 0.7;
-    margin-bottom: 4vh;
+    font-size: 32px;
+    color: #cfd6e6;
+    margin-top: 10px;
+    letter-spacing: 2px;
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2vw;
-    padding: 0 4vw;
+  .row {
+    width: 1760px;
+    margin: 0 auto;
+    margin-top: 110px;
+    text-align: center;
+    white-space: nowrap;
   }
   .tile {
-    background: #1b1b1f;
-    border-radius: 16px;
-    padding: 3vh 1vw;
-    text-align: center;
-    font-size: 1.6vw;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    width: 190px;
+    height: 150px;
+    margin: 0 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
     text-decoration: none;
-    color: #fff;
-    border: 2px solid transparent;
+    color: #ffffff;
+    vertical-align: top;
   }
-  .tile:focus, .tile:hover {
+  .tile .icon {
+    display: block;
+    font-size: 52px;
+    margin-top: 28px;
+  }
+  .tile .label {
+    display: block;
+    font-size: 22px;
+    margin-top: 14px;
+    font-weight: bold;
+  }
+  .tile:focus,
+  .tile:hover {
+    background-color: rgba(255, 255, 255, 0.22);
     border-color: #4da3ff;
-    background: #26262c;
   }
 </style>
 </head>
 <body>
-  <div class="clock" id="clock">--:--</div>
-  <div class="date" id="date"></div>
-  <div class="grid">
-    <a class="tile" href="https://www.youtube.com/tv" tabindex="1">YouTube</a>
-    <a class="tile" href="https://www.netflix.com" tabindex="2">Netflix</a>
-    <a class="tile" href="https://www.primevideo.com" tabindex="3">Prime Video</a>
-    <a class="tile" href="https://www.disneyplus.com" tabindex="4">Disney+</a>
-    <a class="tile" href="https://www.plex.tv/watch-free" tabindex="5">Plex</a>
-    <a class="tile" href="https://www.zdf.de" tabindex="6">ZDF</a>
-    <a class="tile" href="https://www.ardmediathek.de" tabindex="7">ARD</a>
-    <a class="tile" href="https://www.arte.tv" tabindex="8">ARTE</a>
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="clock" id="clock">--:--</div>
+    <div class="date" id="date"></div>
+    <div class="row">
+      <a class="tile" href="https://www.youtube.com/tv" tabindex="1">
+        <span class="icon">&#9654;</span><span class="label">YouTube</span>
+      </a>
+      <a class="tile" href="https://www.netflix.com" tabindex="2">
+        <span class="icon">&#127916;</span><span class="label">Netflix</span>
+      </a>
+      <a class="tile" href="https://www.primevideo.com" tabindex="3">
+        <span class="icon">&#128250;</span><span class="label">Prime Video</span>
+      </a>
+      <a class="tile" href="https://www.disneyplus.com" tabindex="4">
+        <span class="icon">&#10024;</span><span class="label">Disney+</span>
+      </a>
+      <a class="tile" href="https://www.plex.tv/watch-free" tabindex="5">
+        <span class="icon">&#9654;</span><span class="label">Plex</span>
+      </a>
+      <a class="tile" href="https://www.zdf.de" tabindex="6">
+        <span class="icon">&#128250;</span><span class="label">ZDF</span>
+      </a>
+      <a class="tile" href="https://www.ardmediathek.de" tabindex="7">
+        <span class="icon">&#128250;</span><span class="label">ARD</span>
+      </a>
+      <a class="tile" href="https://www.arte.tv" tabindex="8">
+        <span class="icon">&#127916;</span><span class="label">ARTE</span>
+      </a>
+    </div>
   </div>
 <script>
+function pad(n) {
+  n = n + "";
+  if (n.length < 2) { return "0" + n; }
+  return n;
+}
+var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"];
 function tick() {
-  const now = new Date();
-  document.getElementById('clock').textContent =
-    now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-  document.getElementById('date').textContent =
-    now.toLocaleDateString([], {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+  var now = new Date();
+  var h = now.getHours();
+  var ampm = h >= 12 ? "PM" : "AM";
+  var h12 = h % 12;
+  if (h12 === 0) { h12 = 12; }
+  document.getElementById("clock").innerHTML = h12 + ":" + pad(now.getMinutes()) + " " + ampm;
+  document.getElementById("date").innerHTML =
+    DAYS[now.getDay()] + ", " + MONTHS[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
 }
 tick();
-setInterval(tick, 1000 * 30);
+setInterval(tick, 30000);
 </script>
 </body>
 </html>
