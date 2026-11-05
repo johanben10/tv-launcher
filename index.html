@@ -14,309 +14,510 @@
   --accent:#3d5afe; --focus:#151a2b; --glow:rgba(61,90,254,.4);
 }
 :root[data-theme="ambient"]{
-  --bg:#07060f; --bg2:#1a1038; --card:rgba(255,255,255,.08); --text:#f5f2ff; --muted:#b3a9d6;
+  --bg:#07060f; --bg2:#1a1038; --card:#241a3a; --text:#f5f2ff; --muted:#b3a9d6;
   --accent:#c084fc; --focus:#fff; --glow:rgba(192,132,252,.6);
 }
 *{box-sizing:border-box;margin:0}
-html{font-size:clamp(14px,1.25vw,24px)}
+html{font-size:18px}
 body{
-  min-height:100vh; color:var(--text); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  background:radial-gradient(120% 90% at 15% 0%,var(--bg2),var(--bg)) fixed; overflow-x:hidden;
+  min-height:100vh; color:var(--text); font-family:Arial,Helvetica,sans-serif;
+  background-color:var(--bg);
+  background-image:linear-gradient(135deg,var(--bg2),var(--bg));
+  overflow-x:hidden;
 }
-:root[data-theme="ambient"] body::before{
-  content:""; position:fixed; inset:-20%; z-index:-1; filter:blur(60px); opacity:.7;
-  background:radial-gradient(40% 40% at 20% 30%,#7c3aed88,transparent),
-             radial-gradient(35% 35% at 80% 20%,#06b6d488,transparent),
-             radial-gradient(40% 40% at 60% 85%,#ec489988,transparent);
-  animation:drift 22s ease-in-out infinite alternate;
-}
-@keyframes drift{to{transform:translate(4%,3%) scale(1.1) rotate(6deg)}}
 .wrap{max-width:1600px;margin:0 auto;padding:2rem 2.5rem 3rem}
-header{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start}
-.clock{font-size:5.5rem;font-weight:200;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-.date{color:var(--muted);font-size:1.3rem;margin-top:.4rem}
+header{display:block;width:100%;overflow:hidden}
+.header-left{float:left;max-width:60%}
+.header-right{float:right}
+.clock{font-size:4.2rem;font-weight:bold;letter-spacing:-0.02em;line-height:1.1}
+.date{color:var(--muted);font-size:1.2rem;margin-top:.4rem}
 .greet{color:var(--accent);font-size:1.1rem;margin-bottom:.4rem}
-.weather{background:var(--card);border-radius:1.2rem;padding:1.1rem 1.4rem;min-width:22rem;backdrop-filter:blur(12px)}
-.wnow{display:flex;align-items:center;gap:1rem}
-.wicon{font-size:3rem}
-.wtemp{font-size:2.6rem;font-weight:300}
-.wmeta{color:var(--muted);font-size:.95rem}
-.wdays{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin-top:.9rem;text-align:center;font-size:.85rem;color:var(--muted)}
-.wdays b{display:block;color:var(--text);font-weight:500}
-.wdays span.i{display:block;font-size:1.4rem;margin:.15rem 0}
-.bar{display:flex;gap:1rem;align-items:center;margin:2rem 0 1.5rem;flex-wrap:wrap}
-.search{flex:1;min-width:16rem;display:flex;align-items:center;gap:.7rem;background:var(--card);border-radius:999px;padding:.2rem 1.2rem;border:3px solid transparent}
-.search:focus-within{border-color:var(--focus);box-shadow:0 0 0 6px var(--glow)}
-.search input{flex:1;background:none;border:0;outline:0;color:var(--text);font-size:1.2rem;padding:.8rem 0}
-.search input::placeholder{color:var(--muted)}
-button,.tile,.chip{font:inherit;color:inherit;cursor:pointer}
-.chip{background:var(--card);border:3px solid transparent;border-radius:999px;padding:.75rem 1.4rem;font-size:1.05rem;transition:transform .15s}
-.chip[aria-pressed="true"]{background:var(--accent);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:1.4rem}
+.weather{background-color:var(--card);border-radius:1.2rem;padding:1.1rem 1.4rem;min-width:22rem}
+.wnow{overflow:hidden}
+.wicon{font-size:2.6rem;float:left;margin-right:1rem}
+.wtemp{font-size:2.2rem;font-weight:bold}
+.wmeta{color:var(--muted);font-size:.9rem}
+.wdays{margin-top:.9rem;text-align:center;font-size:.8rem;color:var(--muted);overflow:hidden}
+.wdays .d{float:left;width:20%}
+.wdays b{display:block;color:var(--text);font-weight:bold}
+.wdays span.i{display:block;font-size:1.3rem;margin:.15rem 0}
+.bar{margin:2rem 0 1.5rem;overflow:hidden}
+.search{display:block;overflow:hidden;background-color:var(--card);border-radius:999px;padding:.2rem 1.2rem;border:3px solid transparent;float:left;width:40%}
+.search.focused{border-color:var(--focus)}
+.search input{width:100%;background:none;border:0;outline:0;color:var(--text);font-size:1.1rem;padding:.8rem 0}
+button,.tile,.chip{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+.chip{background-color:var(--card);border:3px solid transparent;border-radius:999px;padding:.7rem 1.2rem;font-size:1rem;float:left;margin-left:.8rem}
+.chip[aria-pressed="true"]{background-color:var(--accent);color:#fff}
+.grid{overflow:hidden}
 .tile{
-  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
-  aspect-ratio:16/10;border-radius:1.4rem;text-decoration:none;border:4px solid transparent;
-  background:linear-gradient(145deg,var(--c,#333),color-mix(in srgb,var(--c,#333) 55%,#000));
-  color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:transform .18s,box-shadow .18s;outline:none;
+  position:relative;display:block;float:left;text-align:center;
+  width:12.5rem;height:8rem;margin:0 1.2rem 1.2rem 0;border-radius:1.2rem;text-decoration:none;
+  border:4px solid transparent;background-color:#333333;color:#fff;
+  padding-top:1.6rem;
 }
-.tile img{width:3.4rem;height:3.4rem;filter:invert(1);object-fit:contain}
-.tile .fb{display:none;font-size:2.4rem;font-weight:700}
-.tile .name{font-size:1.15rem;font-weight:600;letter-spacing:.01em}
-.tile:focus,.chip:focus,.tile:hover{transform:scale(1.08);border-color:var(--focus);box-shadow:0 0 0 6px var(--glow),0 18px 40px rgba(0,0,0,.45);z-index:2;outline:none}
-.chip:focus{transform:scale(1.05);border-color:var(--focus);box-shadow:0 0 0 5px var(--glow)}
-.tile.dragover{opacity:.5}
-.edit .tile{animation:wob .35s ease-in-out infinite alternate}
-@keyframes wob{from{transform:rotate(-.6deg)}to{transform:rotate(.6deg)}}
-.tools{position:absolute;inset:auto 0 .5rem 0;display:none;justify-content:center;gap:.4rem}
-.edit .tools{display:flex}
-.tools button{background:rgba(0,0,0,.55);border:2px solid transparent;color:#fff;border-radius:.6rem;padding:.2rem .6rem;font-size:1rem}
-.tools button:focus{border-color:#fff;outline:none;background:#000}
-.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem;font-size:1.2rem}
-footer{margin-top:2.5rem;color:var(--muted);font-size:.9rem;display:flex;gap:1.5rem;flex-wrap:wrap}
-kbd{background:var(--card);border-radius:.4rem;padding:.1rem .5rem}
-dialog{border:0;border-radius:1.4rem;background:var(--bg2);color:var(--text);padding:1.8rem;width:min(34rem,92vw)}
-dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}
-dialog h2{margin-bottom:1rem;font-weight:500}
-dialog label{display:block;margin:.8rem 0 .3rem;color:var(--muted);font-size:.95rem}
-dialog input{width:100%;background:var(--card);border:3px solid transparent;border-radius:.8rem;padding:.7rem 1rem;color:var(--text);font-size:1.1rem;outline:0}
-dialog input:focus{border-color:var(--focus)}
-.row{display:flex;gap:.8rem;margin-top:1.4rem;justify-content:flex-end}
-@media (max-width:800px){header{grid-template-columns:1fr}.clock{font-size:3.6rem}.wrap{padding:1.2rem}}
+.tile .inner{display:block;}
+.tile img{width:3rem;height:3rem;filter:invert(1);display:block;margin:0 auto}
+.tile .fb{display:none;font-size:2rem;font-weight:bold}
+.tile .name{display:block;font-size:1.05rem;font-weight:bold;margin-top:.7rem}
+.tile.tv-focus,.chip.tv-focus{border-color:var(--focus);background-color:#444444}
+.tools{position:absolute;left:0;right:0;bottom:.4rem;text-align:center;display:none}
+.edit .tools{display:block}
+.tools button{background-color:rgba(0,0,0,.55);border:2px solid transparent;color:#fff;border-radius:.5rem;padding:.2rem .5rem;font-size:.9rem;margin:0 .15rem}
+.empty{clear:both;text-align:center;color:var(--muted);padding:3rem;font-size:1.1rem}
+footer{clear:both;margin-top:2.5rem;color:var(--muted);font-size:.85rem}
+footer span{margin-right:1.4rem}
+kbd{background-color:var(--card);border-radius:.4rem;padding:.1rem .5rem}
+.dlg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.65);z-index:50}
+.dlg.open{display:block}
+.dlg .box{background-color:var(--bg2);color:var(--text);padding:1.8rem;width:30rem;max-width:90%;border-radius:1.2rem;margin:8% auto}
+.dlg h2{margin-bottom:1rem;font-weight:normal}
+.dlg label{display:block;margin:.8rem 0 .3rem;color:var(--muted);font-size:.9rem}
+.dlg input{width:100%;background-color:var(--card);border:3px solid transparent;border-radius:.7rem;padding:.6rem .9rem;color:var(--text);font-size:1rem}
+.dlg .row{overflow:hidden;margin-top:1.3rem;text-align:right}
+.dlg .row .chip{float:none;display:inline-block;margin-left:.6rem}
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
   <header>
-    <div>
+    <div class="header-left">
       <div class="greet" id="greet"></div>
       <div class="clock" id="clock">--:--</div>
       <div class="date" id="date"></div>
     </div>
-    <div class="weather" id="weather" aria-live="polite">
-      <div class="wmeta">Loading weather…</div>
+    <div class="header-right">
+      <div class="weather" id="weather">
+        <div class="wmeta">Loading weather...</div>
+      </div>
     </div>
   </header>
 
   <div class="bar">
-    <label class="search">
-      <span aria-hidden="true">🔍</span>
-      <input id="q" type="search" placeholder="Search services…  (press / to focus)" autocomplete="off" aria-label="Search services">
-    </label>
-    <button class="chip" id="btnTheme">🎨 Theme: Dark</button>
-    <button class="chip" id="btnEdit" aria-pressed="false">✏️ Edit tiles</button>
-    <button class="chip" id="btnAdd" hidden>＋ Add</button>
-    <button class="chip" id="btnLoc">📍 Location</button>
+    <div class="search" id="searchBox">
+      <input id="q" type="text" placeholder="Search services..." autocomplete="off">
+    </div>
+    <button class="chip" id="btnTheme">Theme: Dark</button>
+    <button class="chip" id="btnEdit">Edit tiles</button>
+    <button class="chip" id="btnAdd" style="display:none;">+ Add</button>
+    <button class="chip" id="btnLoc">Location</button>
   </div>
 
-  <main class="grid" id="grid" aria-label="Streaming services"></main>
+  <main class="grid" id="grid"></main>
 
   <footer>
-    <span><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> move</span>
-    <span><kbd>Enter</kbd> open</span>
-    <span><kbd>/</kbd> search</span>
-    <span><kbd>Esc</kbd>/<kbd>Back</kbd> close or clear</span>
-    <span><kbd>1–9</kbd> quick launch</span>
+    <span><kbd>Arrows</kbd> move</span>
+    <span><kbd>OK</kbd> open</span>
+    <span><kbd>Back</kbd> close or clear</span>
   </footer>
 </div>
 
-<dialog id="dlgAdd">
-  <h2>Add service</h2>
-  <form method="dialog" id="fAdd">
-    <label for="aName">Name</label><input id="aName" required maxlength="24">
-    <label for="aUrl">Web address</label><input id="aUrl" type="url" required placeholder="https://…">
+<div class="dlg" id="dlgAdd">
+  <div class="box">
+    <h2>Add service</h2>
+    <label for="aName">Name</label><input id="aName" maxlength="24">
+    <label for="aUrl">Web address</label><input id="aUrl" placeholder="https://...">
     <label for="aIcon">Icon slug (optional, from simpleicons.org)</label><input id="aIcon" placeholder="e.g. twitch">
-    <label for="aColor">Color</label><input id="aColor" type="color" value="#6c8cff">
-    <div class="row"><button class="chip" type="button" id="aCancel">Cancel</button><button class="chip" style="background:var(--accent);color:#fff">Add</button></div>
-  </form>
-</dialog>
+    <label for="aColor">Color (hex, e.g. #6c8cff)</label><input id="aColor" value="#6c8cff">
+    <div class="row"><button class="chip" id="aCancel">Cancel</button><button class="chip" id="aSave" style="background-color:#6c8cff;color:#fff;">Add</button></div>
+  </div>
+</div>
 
-<dialog id="dlgLoc">
-  <h2>Weather location</h2>
-  <form method="dialog" id="fLoc">
-    <label for="lCity">City</label><input id="lCity" required placeholder="e.g. Berlin">
-    <div class="row"><button class="chip" type="button" id="lGeo">Use my location</button><button class="chip" type="button" id="lCancel">Cancel</button><button class="chip" style="background:var(--accent);color:#fff">Save</button></div>
-  </form>
-</dialog>
+<div class="dlg" id="dlgLoc">
+  <div class="box">
+    <h2>Weather location</h2>
+    <label for="lCity">City</label><input id="lCity" placeholder="e.g. Lagos">
+    <div class="row"><button class="chip" id="lCancel">Cancel</button><button class="chip" id="lSave" style="background-color:#6c8cff;color:#fff;">Save</button></div>
+  </div>
+</div>
 
 <script>
-(() => {
-  const $ = s => document.querySelector(s);
-  const store = {
-    get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-  };
+function $(sel) { return document.querySelector(sel); }
+function $all(sel) { return document.querySelectorAll(sel); }
 
-  /* ---------- Data ---------- */
-  const DEFAULTS = [
-    {name:"Netflix",url:"https://www.netflix.com",icon:"netflix",color:"#b20710"},
-    {name:"YouTube",url:"https://www.youtube.com/tv",icon:"youtube",color:"#c4302b"},
-    {name:"Prime Video",url:"https://www.primevideo.com",icon:"primevideo",color:"#0a7fb8"},
-    {name:"Disney+",url:"https://www.disneyplus.com",icon:"disneyplus",color:"#113ccf"},
-    {name:"DAZN",url:"https://www.dazn.com",icon:"dazn",color:"#2b2f3a"},
-    {name:"Zattoo",url:"https://zattoo.com/watch",icon:"zattoo",color:"#d9730d"},
-    {name:"Joyn",url:"https://www.joyn.de",icon:"",color:"#e5007d"},
-    {name:"RTL+",url:"https://plus.rtl.de",icon:"",color:"#c8102e"},
-    {name:"HD+",url:"https://www.hd-plus.de",icon:"",color:"#00649b"},
-    {name:"Plex",url:"https://watch.plex.tv",icon:"plex",color:"#b8860b"},
-    {name:"ARD Mediathek",url:"https://www.ardmediathek.de",icon:"",color:"#0b3a8c"},
-    {name:"ARTE",url:"https://www.arte.tv",icon:"",color:"#d45500"}
-  ];
-  let tiles = store.get("tiles", DEFAULTS);
-  let editing = false;
-
-  /* ---------- Theme ---------- */
-  const THEMES = ["dark","light","ambient"];
-  let theme = store.get("theme","dark");
-  function applyTheme(){
-    document.documentElement.dataset.theme = theme;
-    $("#btnTheme").textContent = "🎨 Theme: " + theme[0].toUpperCase() + theme.slice(1);
+var store = {
+  get: function (k, d) {
+    try {
+      var v = localStorage.getItem(k);
+      return v ? JSON.parse(v) : d;
+    } catch (e) { return d; }
+  },
+  set: function (k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
   }
-  $("#btnTheme").onclick = () => { theme = THEMES[(THEMES.indexOf(theme)+1)%THEMES.length]; store.set("theme",theme); applyTheme(); };
+};
+
+/* ---------- Data ---------- */
+var DEFAULTS = [
+  { name: "Netflix", url: "https://www.netflix.com", icon: "netflix", color: "#b20710" },
+  { name: "YouTube", url: "https://www.youtube.com/tv", icon: "youtube", color: "#c4302b" },
+  { name: "Prime Video", url: "https://www.primevideo.com", icon: "primevideo", color: "#0a7fb8" },
+  { name: "Disney+", url: "https://www.disneyplus.com", icon: "disneyplus", color: "#113ccf" },
+  { name: "DAZN", url: "https://www.dazn.com", icon: "dazn", color: "#2b2f3a" },
+  { name: "Zattoo", url: "https://zattoo.com/watch", icon: "zattoo", color: "#d9730d" },
+  { name: "Joyn", url: "https://www.joyn.de", icon: "", color: "#e5007d" },
+  { name: "RTL+", url: "https://plus.rtl.de", icon: "", color: "#c8102e" },
+  { name: "HD+", url: "https://www.hd-plus.de", icon: "", color: "#00649b" },
+  { name: "Plex", url: "https://watch.plex.tv", icon: "plex", color: "#b8860b" },
+  { name: "ARD Mediathek", url: "https://www.ardmediathek.de", icon: "", color: "#0b3a8c" },
+  { name: "ARTE", url: "https://www.arte.tv", icon: "", color: "#d45500" }
+];
+var tiles = store.get("tiles", DEFAULTS);
+var editing = false;
+
+/* ---------- Theme ---------- */
+var THEMES = ["dark", "light", "ambient"];
+var theme = store.get("theme", "dark");
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme", theme);
+  var label = theme.charAt(0).toUpperCase() + theme.slice(1);
+  $("#btnTheme").innerHTML = "Theme: " + label;
+}
+$("#btnTheme").onclick = function () {
+  var idx = THEMES.indexOf(theme);
+  theme = THEMES[(idx + 1) % THEMES.length];
+  store.set("theme", theme);
   applyTheme();
+};
+applyTheme();
 
-  /* ---------- Clock ---------- */
-  function tick(){
-    const d = new Date();
-    $("#clock").textContent = d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",hour12:false});
-    $("#date").textContent = d.toLocaleDateString([], {weekday:"long",day:"numeric",month:"long",year:"numeric"});
-    const h = d.getHours();
-    $("#greet").textContent = h<5?"Good night":h<12?"Good morning":h<18?"Good afternoon":"Good evening";
-  }
-  tick(); setInterval(tick, 15000);
+/* ---------- Clock ---------- */
+var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+  "August", "September", "October", "November", "December"];
+function pad(n) {
+  n = n + "";
+  if (n.length < 2) { return "0" + n; }
+  return n;
+}
+function tick() {
+  var d = new Date();
+  $("#clock").innerHTML = pad(d.getHours()) + ":" + pad(d.getMinutes());
+  $("#date").innerHTML = DAYS[d.getDay()] + ", " + d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+  var h = d.getHours();
+  var greeting = h < 5 ? "Good night" : h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+  $("#greet").innerHTML = greeting;
+}
+tick();
+setInterval(tick, 15000);
 
-  /* ---------- Tiles ---------- */
-  const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  function render(){
-    const q = $("#q").value.trim().toLowerCase();
-    const g = $("#grid");
-    g.classList.toggle("edit", editing);
-    const list = tiles.map((t,i)=>({t,i})).filter(({t}) => !q || t.name.toLowerCase().includes(q));
-    if(!list.length){ g.innerHTML = `<div class="empty">No service matches “${esc(q)}”.</div>`; return; }
-    g.innerHTML = list.map(({t,i},n) => `
-      <a class="tile" href="${esc(t.url)}" data-i="${i}" style="--c:${esc(t.color||"#333")}" ${editing?'':'rel="noopener"'} aria-label="${esc(t.name)}">
-        ${t.icon?`<img alt="" src="https://cdn.jsdelivr.net/npm/simple-icons@13/icons/${encodeURIComponent(t.icon)}.svg">`:""}
-        <span class="fb" ${t.icon?"":'style="display:block"'}>${esc(t.name.slice(0,2))}</span>
-        <span class="name">${esc(t.name)}</span>
-        <span class="tools">
-          <button data-act="left" aria-label="Move left">◀</button>
-          <button data-act="del" aria-label="Remove">✕</button>
-          <button data-act="right" aria-label="Move right">▶</button>
-        </span>
-      </a>`).join("");
-    g.querySelectorAll("img").forEach(im => im.onerror = () => { im.style.display="none"; im.nextElementSibling.style.display="block"; });
-  }
-  $("#grid").addEventListener("click", e => {
-    const tile = e.target.closest(".tile"); if(!tile) return;
-    const i = +tile.dataset.i, btn = e.target.closest("[data-act]");
-    if(editing){
-      e.preventDefault();
-      if(!btn) return;
-      const act = btn.dataset.act;
-      if(act==="del") tiles.splice(i,1);
-      else { const j = act==="left"?i-1:i+1; if(j<0||j>=tiles.length) return; [tiles[i],tiles[j]]=[tiles[j],tiles[i]]; }
-      store.set("tiles",tiles); render();
-      const f = $(`.tile[data-i="${act==="del"?Math.min(i,tiles.length-1):(act==="left"?i-1:i+1)}"] [data-act="${act}"]`) || $(".tile");
-      f && f.focus();
+/* ---------- Tiles ---------- */
+function esc(s) {
+  s = s == null ? "" : String(s);
+  return s.replace(/[&<>"']/g, function (c) {
+    if (c === "&") { return "&amp;"; }
+    if (c === "<") { return "&lt;"; }
+    if (c === ">") { return "&gt;"; }
+    if (c === '"') { return "&quot;"; }
+    return "&#39;";
+  });
+}
+
+function render() {
+  var q = $("#q").value.replace(/^\s+|\s+$/g, "").toLowerCase();
+  var g = $("#grid");
+  if (editing) { g.className = "grid edit"; } else { g.className = "grid"; }
+
+  var list = [];
+  var i;
+  for (i = 0; i < tiles.length; i++) {
+    if (!q || tiles[i].name.toLowerCase().indexOf(q) !== -1) {
+      list.push({ t: tiles[i], i: i });
     }
-  });
-  $("#q").addEventListener("input", render);
-  $("#q").addEventListener("keydown", e => {
-    if(e.key==="Enter"){ const first = $(".tile"); if(first && !editing) first.click(); }
-  });
+  }
 
-  $("#btnEdit").onclick = () => {
-    editing = !editing;
-    $("#btnEdit").setAttribute("aria-pressed", editing);
-    $("#btnEdit").textContent = editing ? "✔ Done" : "✏️ Edit tiles";
-    $("#btnAdd").hidden = !editing;
+  if (list.length === 0) {
+    g.innerHTML = '<div class="empty">No service matches "' + esc(q) + '".</div>';
+    return;
+  }
+
+  var html = "";
+  for (i = 0; i < list.length; i++) {
+    var t = list[i].t;
+    var idx = list[i].i;
+    var color = esc(t.color || "#333333");
+    html += '<a class="tile" href="' + esc(t.url) + '" data-i="' + idx + '" style="background-color:' + color + ';" tabindex="0">';
+    if (t.icon) {
+      html += '<img alt="" src="https://cdn.jsdelivr.net/npm/simple-icons@13/icons/' + encodeURIComponent(t.icon) + '.svg">';
+      html += '<span class="fb">' + esc(t.name.slice(0, 2)) + '</span>';
+    } else {
+      html += '<span class="fb" style="display:block">' + esc(t.name.slice(0, 2)) + '</span>';
+    }
+    html += '<span class="name">' + esc(t.name) + '</span>';
+    html += '<span class="tools">';
+    html += '<button data-act="left">&lt;</button>';
+    html += '<button data-act="del">X</button>';
+    html += '<button data-act="right">&gt;</button>';
+    html += '</span>';
+    html += '</a>';
+  }
+  g.innerHTML = html;
+
+  var imgs = g.querySelectorAll("img");
+  for (i = 0; i < imgs.length; i++) {
+    imgs[i].onerror = (function (im) {
+      return function () {
+        im.style.display = "none";
+        var fb = im.nextSibling;
+        if (fb) { fb.style.display = "block"; }
+      };
+    })(imgs[i]);
+  }
+}
+
+$("#grid").addEventListener("click", function (e) {
+  var tile = e.target;
+  while (tile && tile.className.indexOf("tile") === -1) { tile = tile.parentNode; }
+  if (!tile || !tile.getAttribute) { return; }
+  var idx = parseInt(tile.getAttribute("data-i"), 10);
+
+  var btn = e.target;
+  var actEl = null;
+  while (btn && btn !== tile) {
+    if (btn.getAttribute && btn.getAttribute("data-act")) { actEl = btn; break; }
+    btn = btn.parentNode;
+  }
+
+  if (editing) {
+    e.preventDefault();
+    if (!actEl) { return; }
+    var act = actEl.getAttribute("data-act");
+    if (act === "del") {
+      tiles.splice(idx, 1);
+    } else {
+      var j = act === "left" ? idx - 1 : idx + 1;
+      if (j < 0 || j >= tiles.length) { return; }
+      var tmp = tiles[idx];
+      tiles[idx] = tiles[j];
+      tiles[j] = tmp;
+    }
+    store.set("tiles", tiles);
     render();
-  };
-
-  /* ---------- Add dialog ---------- */
-  const dAdd = $("#dlgAdd");
-  $("#btnAdd").onclick = () => { $("#fAdd").reset(); dAdd.showModal(); $("#aName").focus(); };
-  $("#aCancel").onclick = () => dAdd.close();
-  $("#fAdd").addEventListener("submit", () => {
-    tiles.push({name:$("#aName").value.trim(), url:$("#aUrl").value.trim(), icon:$("#aIcon").value.trim().toLowerCase(), color:$("#aColor").value});
-    store.set("tiles",tiles); render();
-  });
-
-  /* ---------- Weather ---------- */
-  const WX = c => c===0?["☀️","Clear"]:c<=2?["🌤️","Partly cloudy"]:c===3?["☁️","Overcast"]:c<=48?["🌫️","Fog"]:c<=57?["🌦️","Drizzle"]:c<=67?["🌧️","Rain"]:c<=77?["🌨️","Snow"]:c<=82?["🌧️","Showers"]:c<=86?["🌨️","Snow showers"]:["⛈️","Thunderstorm"];
-  let loc = store.get("loc", {name:"Lagos, NG",lat:6.5244,lon:3.3792});
-  async function loadWeather(){
-    const box = $("#weather");
-    try{
-      const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`);
-      if(!r.ok) throw 0;
-      const w = await r.json(), c = w.current, [ic,txt] = WX(c.weather_code);
-      const days = w.daily.time.map((d,i)=>`<div><b>${i?new Date(d+"T12:00").toLocaleDateString([], {weekday:"short"}):"Today"}</b><span class="i">${WX(w.daily.weather_code[i])[0]}</span>${Math.round(w.daily.temperature_2m_max[i])}° / ${Math.round(w.daily.temperature_2m_min[i])}°</div>`).join("");
-      box.innerHTML = `<div class="wnow"><span class="wicon">${ic}</span><div><div class="wtemp">${Math.round(c.temperature_2m)}°C</div><div class="wmeta">${txt} · feels ${Math.round(c.apparent_temperature)}° · wind ${Math.round(c.wind_speed_10m)} km/h</div><div class="wmeta">${esc(loc.name)}</div></div></div><div class="wdays">${days}</div>`;
-    }catch{ box.innerHTML = `<div class="wmeta">Weather unavailable. Check your connection or set a location.</div>`; }
   }
-  loadWeather(); setInterval(loadWeather, 15*60*1000);
+});
 
-  const dLoc = $("#dlgLoc");
-  $("#btnLoc").onclick = () => { dLoc.showModal(); $("#lCity").focus(); };
-  $("#lCancel").onclick = () => dLoc.close();
-  $("#lGeo").onclick = () => navigator.geolocation?.getCurrentPosition(p => {
-    loc = {name:"My location",lat:p.coords.latitude,lon:p.coords.longitude}; store.set("loc",loc); dLoc.close(); loadWeather();
-  }, () => alert("Location not available on this device."));
-  $("#fLoc").addEventListener("submit", async () => {
-    try{
-      const r = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=1&name=${encodeURIComponent($("#lCity").value)}`)).json();
-      const p = r.results && r.results[0];
-      if(p){ loc = {name:`${p.name}, ${p.country_code||""}`,lat:p.latitude,lon:p.longitude}; store.set("loc",loc); loadWeather(); }
-      else alert("City not found.");
-    }catch{ alert("Could not look up that city."); }
+$("#q").addEventListener("input", render);
+$("#q").addEventListener("focus", function () { $("#searchBox").className = "search focused"; });
+$("#q").addEventListener("blur", function () { $("#searchBox").className = "search"; });
+
+$("#btnEdit").onclick = function () {
+  editing = !editing;
+  $("#btnEdit").innerHTML = editing ? "Done" : "Edit tiles";
+  $("#btnAdd").style.display = editing ? "" : "none";
+  render();
+};
+
+/* ---------- Add dialog ---------- */
+var dAdd = $("#dlgAdd");
+$("#btnAdd").onclick = function () {
+  $("#aName").value = "";
+  $("#aUrl").value = "";
+  $("#aIcon").value = "";
+  $("#aColor").value = "#6c8cff";
+  dAdd.className = "dlg open";
+};
+$("#aCancel").onclick = function () { dAdd.className = "dlg"; };
+$("#aSave").onclick = function () {
+  var name = $("#aName").value.replace(/^\s+|\s+$/g, "");
+  var url = $("#aUrl").value.replace(/^\s+|\s+$/g, "");
+  if (!name || !url) { return; }
+  tiles.push({
+    name: name,
+    url: url,
+    icon: $("#aIcon").value.replace(/^\s+|\s+$/g, "").toLowerCase(),
+    color: $("#aColor").value || "#333333"
   });
+  store.set("tiles", tiles);
+  dAdd.className = "dlg";
+  render();
+};
 
-  /* ---------- Remote / keyboard spatial navigation ---------- */
-  const focusables = () => [...document.querySelectorAll(".wrap a.tile, .wrap button, .wrap input")]
-    .filter(el => !el.closest("[hidden]") && el.offsetParent !== null && !el.disabled);
-  function move(dir){
-    const els = focusables(), cur = document.activeElement;
-    if(!els.includes(cur)){ (els.find(e=>e.classList.contains("tile"))||els[0])?.focus(); return; }
-    const a = cur.getBoundingClientRect(), ac = {x:a.left+a.width/2, y:a.top+a.height/2};
-    let best=null, bs=Infinity;
-    for(const el of els){
-      if(el===cur) continue;
-      const b = el.getBoundingClientRect(), bc = {x:b.left+b.width/2, y:b.top+b.height/2};
-      const dx = bc.x-ac.x, dy = bc.y-ac.y;
-      const ok = dir==="ArrowRight"?dx>8 && Math.abs(dy)<=Math.abs(dx)*1.6 :
-                 dir==="ArrowLeft" ?dx<-8 && Math.abs(dy)<=Math.abs(dx)*1.6 :
-                 dir==="ArrowDown" ?dy>8 && Math.abs(dx)<=Math.abs(dy)*1.6 :
-                                    dy<-8 && Math.abs(dx)<=Math.abs(dy)*1.6;
-      if(!ok) continue;
-      const main = (dir==="ArrowLeft"||dir==="ArrowRight")?Math.abs(dx):Math.abs(dy);
-      const cross = (dir==="ArrowLeft"||dir==="ArrowRight")?Math.abs(dy):Math.abs(dx);
-      const s = main + cross*2.5;
-      if(s<bs){ bs=s; best=el; }
-    }
-    if(best){ best.focus(); best.scrollIntoView({block:"center",behavior:"smooth"}); }
-  }
-  addEventListener("keydown", e => {
-    const inInput = document.activeElement === $("#q") || document.activeElement.tagName==="INPUT";
-    if(document.querySelector("dialog[open]")){ return; } // native dialog handles Esc/Tab
-    if(e.key.startsWith("Arrow")){
-      if(inInput && (e.key==="ArrowLeft"||e.key==="ArrowRight") ) return; // allow caret movement
-      e.preventDefault(); move(e.key); return;
-    }
-    if(e.key==="/" && !inInput){ e.preventDefault(); $("#q").focus(); return; }
-    if(["Escape","Backspace","BrowserBack","GoBack"].includes(e.key) || e.keyCode===461 || e.keyCode===10009){
-      if(inInput && e.key==="Backspace") return;
-      if($("#q").value){ $("#q").value=""; render(); $(".tile")?.focus(); e.preventDefault(); }
-      else if(editing){ $("#btnEdit").click(); e.preventDefault(); }
+/* ---------- Weather ---------- */
+function weatherInfo(code) {
+  if (code === 0) { return ["Clear", "Clear sky"]; }
+  if (code <= 2) { return ["PCld", "Partly cloudy"]; }
+  if (code === 3) { return ["Ovcst", "Overcast"]; }
+  if (code <= 48) { return ["Fog", "Fog"]; }
+  if (code <= 57) { return ["Drzl", "Drizzle"]; }
+  if (code <= 67) { return ["Rain", "Rain"]; }
+  if (code <= 77) { return ["Snow", "Snow"]; }
+  if (code <= 82) { return ["Show", "Showers"]; }
+  if (code <= 86) { return ["Snow", "Snow showers"]; }
+  return ["Strm", "Thunderstorm"];
+}
+
+var loc = store.get("loc", { name: "Lagos, NG", lat: 6.5244, lon: 3.3792 });
+
+function loadWeather() {
+  var box = $("#weather");
+  var xhr = new XMLHttpRequest();
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat +
+    "&longitude=" + loc.lon +
+    "&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m" +
+    "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5";
+  xhr.open("GET", url, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) { return; }
+    if (xhr.status !== 200) {
+      box.innerHTML = '<div class="wmeta">Weather unavailable.</div>';
       return;
     }
-    if(/^[1-9]$/.test(e.key) && !inInput && !editing){
-      const t = document.querySelectorAll(".tile")[+e.key-1]; t && t.click();
+    try {
+      var w = JSON.parse(xhr.responseText);
+      var c = w.current;
+      var info = weatherInfo(c.weather_code);
+      var html = '<div class="wnow"><span class="wicon">' + info[0] + '</span>';
+      html += '<div><div class="wtemp">' + Math.round(c.temperature_2m) + 'C</div>';
+      html += '<div class="wmeta">' + info[1] + ' - feels ' + Math.round(c.apparent_temperature) +
+        'C - wind ' + Math.round(c.wind_speed_10m) + ' km/h</div>';
+      html += '<div class="wmeta">' + esc(loc.name) + '</div></div></div>';
+      html += '<div class="wdays">';
+      var i;
+      for (i = 0; i < w.daily.time.length; i++) {
+        var dayInfo = weatherInfo(w.daily.weather_code[i]);
+        var label = i === 0 ? "Today" : DAYS[new Date(w.daily.time[i] + "T12:00:00").getDay()].slice(0, 3);
+        html += '<div class="d"><b>' + label + '</b><span class="i">' + dayInfo[0] + '</span>' +
+          Math.round(w.daily.temperature_2m_max[i]) + '/' + Math.round(w.daily.temperature_2m_min[i]) + '</div>';
+      }
+      html += '</div>';
+      box.innerHTML = html;
+    } catch (e) {
+      box.innerHTML = '<div class="wmeta">Weather unavailable.</div>';
     }
-  });
+  };
+  xhr.send();
+}
+loadWeather();
+setInterval(loadWeather, 15 * 60 * 1000);
 
-  render();
-  $(".tile")?.focus();
-})();
+var dLoc = $("#dlgLoc");
+$("#btnLoc").onclick = function () {
+  $("#lCity").value = "";
+  dLoc.className = "dlg open";
+};
+$("#lCancel").onclick = function () { dLoc.className = "dlg"; };
+$("#lSave").onclick = function () {
+  var city = $("#lCity").value.replace(/^\s+|\s+$/g, "");
+  if (!city) { return; }
+  var xhr = new XMLHttpRequest();
+  var url = "https://geocoding-api.open-meteo.com/v1/search?count=1&name=" + encodeURIComponent(city);
+  xhr.open("GET", url, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) { return; }
+    try {
+      var data = JSON.parse(xhr.responseText);
+      if (data.results && data.results[0]) {
+        var p = data.results[0];
+        loc = { name: p.name + ", " + (p.country_code || ""), lat: p.latitude, lon: p.longitude };
+        store.set("loc", loc);
+        dLoc.className = "dlg";
+        loadWeather();
+      } else {
+        alert("City not found.");
+      }
+    } catch (e) {
+      alert("Could not look up that city.");
+    }
+  };
+  xhr.send();
+};
+
+/* ---------- Remote D-pad navigation ---------- */
+function focusables() {
+  var els = $all(".wrap a.tile, .wrap button, .wrap input");
+  var out = [];
+  var i;
+  for (i = 0; i < els.length; i++) {
+    if (els[i].offsetParent !== null) { out.push(els[i]); }
+  }
+  return out;
+}
+
+function clearFocusClass() {
+  var all = $all(".tv-focus");
+  var i;
+  for (i = 0; i < all.length; i++) {
+    all[i].className = all[i].className.replace(/\s*tv-focus\s*/, " ");
+  }
+}
+
+document.addEventListener("focus", function (e) {
+  clearFocusClass();
+  if (e.target && e.target.className !== undefined) {
+    e.target.className = e.target.className + " tv-focus";
+  }
+}, true);
+
+function moveFocus(dir) {
+  var els = focusables();
+  var cur = document.activeElement;
+  var idx = -1;
+  var i;
+  for (i = 0; i < els.length; i++) {
+    if (els[i] === cur) { idx = i; break; }
+  }
+  if (idx === -1) {
+    if (els.length > 0) { els[0].focus(); }
+    return;
+  }
+  var a = cur.getBoundingClientRect();
+  var ac = { x: a.left + a.width / 2, y: a.top + a.height / 2 };
+  var best = null;
+  var bestScore = Infinity;
+  for (i = 0; i < els.length; i++) {
+    if (els[i] === cur) { continue; }
+    var b = els[i].getBoundingClientRect();
+    var bc = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+    var dx = bc.x - ac.x;
+    var dy = bc.y - ac.y;
+    var ok = false;
+    if (dir === "right") { ok = dx > 8 && Math.abs(dy) <= Math.abs(dx) * 1.6; }
+    else if (dir === "left") { ok = dx < -8 && Math.abs(dy) <= Math.abs(dx) * 1.6; }
+    else if (dir === "down") { ok = dy > 8 && Math.abs(dx) <= Math.abs(dy) * 1.6; }
+    else { ok = dy < -8 && Math.abs(dx) <= Math.abs(dy) * 1.6; }
+    if (!ok) { continue; }
+    var main = (dir === "left" || dir === "right") ? Math.abs(dx) : Math.abs(dy);
+    var cross = (dir === "left" || dir === "right") ? Math.abs(dy) : Math.abs(dx);
+    var score = main + cross * 2.5;
+    if (score < bestScore) { bestScore = score; best = els[i]; }
+  }
+  if (best) {
+    best.focus();
+    if (best.scrollIntoView) { best.scrollIntoView(); }
+  }
+}
+
+document.addEventListener("keydown", function (e) {
+  var key = e.key;
+  var active = document.activeElement;
+  var inInput = active && active.tagName === "INPUT";
+
+  if (key === "ArrowRight") { if (!inInput) { e.preventDefault(); moveFocus("right"); } return; }
+  if (key === "ArrowLeft") { if (!inInput) { e.preventDefault(); moveFocus("left"); } return; }
+  if (key === "ArrowDown") { e.preventDefault(); moveFocus("down"); return; }
+  if (key === "ArrowUp") { e.preventDefault(); moveFocus("up"); return; }
+
+  if (key === "Escape" || key === "Backspace" || e.keyCode === 461 || e.keyCode === 10009) {
+    if (inInput) { return; }
+    if ($("#q").value) {
+      $("#q").value = "";
+      render();
+      e.preventDefault();
+    } else if (dAdd.className.indexOf("open") !== -1) {
+      dAdd.className = "dlg";
+      e.preventDefault();
+    } else if (dLoc.className.indexOf("open") !== -1) {
+      dLoc.className = "dlg";
+      e.preventDefault();
+    } else if (editing) {
+      $("#btnEdit").click();
+      e.preventDefault();
+    }
+  }
+});
+
+render();
+var firstTile = $(".tile");
+if (firstTile) { firstTile.focus(); }
 </script>
 </body>
 </html>
